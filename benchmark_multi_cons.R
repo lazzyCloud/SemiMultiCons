@@ -31,22 +31,22 @@ conNumList <- seq(0.0004,0.02,0.0004)
 #--------------------#
 # MNIST3 dataset input #
 #--------------------#
-#LinkFolder <- "constraints/mnist3/"
-#LinkFolder <- "constraints/mnist3_1/"
-#LinkFolder <- "constraints/mnist3_2/"
-#LinkFolder <- "constraints/mnist3_3/"
-#LinkFolder <- "constraints/mnist3_4/"
-#conNumList <- seq(0.000000065,0.000002,0.00000002)
+#LinkFolder <- "constraints/mnist31/"
+#LinkFolder <- "constraints/mnist32/"
+#LinkFolder <- "constraints/mnist33/"
+#LinkFolder <- "constraints/mnist34/"
+#LinkFolder <- "constraints/mnist35/"
+#conNumList <- seq(0.000000045,0.000002,0.0000001)
 
 #--------------------#
 # MNIST5 dataset input #
 #--------------------#
-#LinkFolder <- "constraints/mnist5/"
-#LinkFolder <- "constraints/mnist5_1/"
-#LinkFolder <- "constraints/mnist5_2/"
-#LinkFolder <- "constraints/mnist5_3/"
-#LinkFolder <- "constraints/mnist5_4/"
-#conNumList <- seq(0.000000005,0.000002,0.00000002)
+#LinkFolder <- "constraints/mnist51/"
+#LinkFolder <- "constraints/mnist52/"
+#LinkFolder <- "constraints/mnist53/"
+#LinkFolder <- "constraints/mnist54/"
+#LinkFolder <- "constraints/mnist55/"
+#conNumList <- seq(0.000000045,0.000002,0.0000001)
 
 LinkNames <- list.files(path=LinkFolder, full.names = FALSE)
 
@@ -91,23 +91,23 @@ for (conNum in conNumList) {
   #----------------------#
   # MNIST3 dataset input #
   #----------------------#
-  #OutDir <- "results/mnist3/"
-  #OutDir <- "results/mnist3_1/"
-  #OutDir <- "results/mnist3_2/"
-  #OutDir <- "results/mnist3_3/"
-  #OutDir <- "results/mnist3_4/"
-  #InDir <- "ensemble members/mnist3/"
+  #OutDir <- "results/mnist31/"
+  #OutDir <- "results/mnist32/"
+  #OutDir <- "results/mnist33/"
+  #OutDir <- "results/mnist34/"
+  #OutDir <- "results/mnist35/"
+  #InDir <- "ensemble members/mnist3_all/"
   #Name <- paste("mnist3",conNum,sep="_") 
   
   #--------------------#
   # MNIST5 dataset input #
   #--------------------#
-  #OutDir <- "results/mnist5/"
-  #OutDir <- "results/mnist5_1/"
-  #OutDir <- "results/mnist5_2/"
-  #OutDir <- "results/mnist5_3/"
-  #OutDir <- "results/mnist5_4/"
-  #InDir <- "ensemble members/mnist5/"
+  #OutDir <- "results/mnist51/"
+  #OutDir <- "results/mnist52/"
+  #OutDir <- "results/mnist53/"
+  #OutDir <- "results/mnist54/"
+  #OutDir <- "results/mnist55/"
+  #InDir <- "ensemble members/mnist5_all/"
   #Name <- paste("mnist5",conNum,sep="_") 
   
   for (LinkName in LinkNames) {

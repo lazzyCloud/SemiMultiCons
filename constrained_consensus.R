@@ -11,13 +11,14 @@ T1 <- Sys.time()
 Cons_Vctrs <- list()
 source("build_first_cons.R")
 
+
 # build multiple consensuses:
 DT_range <- c((Clstrings-1):1)
 for (DT in DT_range)
 {
   Bi_Clust <- c(Bi_Clust,FCI[FCI$CS_size == DT,"Object.List"])
   N_Row <- length(Bi_Clust)
-
+  #cat(DT, ' level consensus start.\n')
   repeat
   {
     Rpt_Chk <- F
@@ -38,17 +39,57 @@ for (DT in DT_range)
         scorekj <- 0
         scoreki <- 0
         
-        Xk <- sort(union(Xi,Xj))
+        #Xk <- sort(union(Xi,Xj))
         Xkk <- intersect(Xi,Xj)
         Xkj <- setdiff(Xj,Xi)
         Xki <- setdiff(Xi,Xj)
         
-        scoreki = -sum(constraints[Xkk,Xki])
-        scorekj = -sum(constraints[Xkk,Xkj])
-        scorek = sum(constraints[Xki,Xkj])
+        temp_kkk <- intersect(Xkk, cons_n)
+        temp_jjj <- intersect(Xkj, cons_n)
+        temp_iii <- intersect(Xki, cons_n)
         
+        scorek <- 0
+        scoreki <- 0
+        scorekj <- 0
         
-        Rpt_Chk <- T
+        #for (iii in temp_iii) {
+        #  for (jjj in temp_kkk) {
+        #    temp <- paste(toString(iii),toString(jjj),sep='_')
+        #    if (!is.null(constraints[[temp]]))
+        #      scoreki <- scoreki - constraints[[temp]]
+        #  }
+        #  for (jjj in temp_jjj) {
+        #    temp <- paste(toString(iii),toString(jjj),sep='_')
+        #  
+        #    if (!is.null(constraints[[temp]]))
+        #      scorekj <- scorekj - constraints[[temp]]
+        #  }
+        #}
+
+        #for (iii in temp_kkk)
+        #  for (jjj in temp_jjj) {
+        #    temp <- paste(toString(iii),toString(jjj),sep='_')
+        #    
+        #    if (!is.null(constraints[[temp]]))
+        #      scorek <- scorek + constraints[[temp]]
+        #  }
+        #scoreki <- -1 * scoreki
+        #scorekj <- -1 * scorekj
+        if ((length(temp_iii) > 0) && (length(temp_kkk) > 0) && (length(Xki) > 0) && (length(Xkk) > 0)) {
+          scoreki = -sum(constraints[unname(values(idx_list, keys=as.character(Xkk))),
+                                     unname(values(idx_list, keys=as.character(Xki)))])
+        }
+        if ((length(temp_jjj) > 0) && (length(temp_kkk) > 0) && (length(Xkj) > 0) && (length(Xkk) > 0)) {
+          scorekj = -sum(constraints[unname(values(idx_list, keys=as.character(Xkk))),
+                                     unname(values(idx_list, keys=as.character(Xkj)))])       
+        }
+        if ((length(temp_iii) > 0) && (length(temp_jjj) > 0) && (length(Xki) > 0) && (length(Xkj) > 0)) {
+          scorek = sum(constraints[unname(values(idx_list, keys=as.character(Xki))),
+                                    unname(values(idx_list, keys=as.character(Xkj)))])
+        }
+        #scoreki = -sum(constraints[Xkk,Xki])
+        #scorekj = -sum(constraints[Xkk,Xkj])
+        #scorek = sum(constraints[Xki,Xkj])
         
         if (scorek == 0 && scoreki == 0 && scorekj == 0) {
           if (Intrs_Size==XiL)
@@ -63,11 +104,13 @@ for (DT in DT_range)
           }
           else if ((Intrs_Size >= XiL*MT)||(Intrs_Size >= XjL*MT))
           { # merge bi_clusters Xi and Xj
+            Rpt_Chk <- T
             Bi_Clust[[j]] <- sort(union(Xi,Xj))
             Bi_Clust[[i]] <- integer(0)
             break
           }  else  
           { # split bi_clusters Xi and Xj
+            Rpt_Chk <- T
             if (XiL <= XjL)
             { 
               Bi_Clust[[j]] <- setdiff(Xj,Xi)
@@ -79,6 +122,8 @@ for (DT in DT_range)
             }
           }
         } else {
+
+          Rpt_Chk <- T
           scorek <- scorek / (length(Xki) + length(Xkj))
           scoreki <- scoreki / length(Xi)# / length(Xkk)
           scorekj <- scorekj / length(Xj) #/ length(Xkk)
@@ -125,7 +170,7 @@ DT_range <- c(1:Clstrings)
 
 
 rm(Bi_Clust,ClustV,DT,Intrs_Size,Xi,Xj,XiL,XjL,N_Row,Rpt_Chk,Indx)
-rm(scorek,scoreki,scorekj, Xk, Xki, Xkj, Xkk)
+rm(scorek,scoreki,scorekj, Xk, Xki, Xkj, Xkk, temp_iii, temp_jjj, temp_kkk)
 
 Stability <- 1
 # calculate the stability of consensus results
@@ -153,7 +198,7 @@ Stability <- Stability[!is.na(Stability)]
 DT_range <- na.omit(DT_range) 
 
 rm(Cons_Vctrs,SimC,Simlr)
-
+#rm(i, iii, j, jjj, scorek, scoreki, scorekj, Xi, XiL, Xj, XjL, Xk, Xki, Xkj, Xkk)
 
 #for(i in length(DT_range):1)
 #{
@@ -166,13 +211,13 @@ T2 <- Sys.time()
 Tme_consensus <- difftime(T2,T1,units = "sec")
 cat("method 2 execution time",Tme_consensus,"sec.",'\n')
 
-T1 <- Sys.time()
+T3 <- Sys.time()
 #Must_Link <- as.data.frame(which(constraints == 1, arr.ind = T))
 #Cannot_Link <- as.data.frame(which(constraints == -1, arr.ind = T))
 source("selection.R")
-T2 <- Sys.time()
-Tme_selection <- difftime(T2,T1,units = "sec")
+T4 <- Sys.time()
+Tme_selection <- difftime(T4,T3,units = "sec")
 cat("selection execution time",Tme_consensus,"sec.",'\n')
 
 
-rm(T1,T2)
+rm(T1,T2,T3,T4)

@@ -60,14 +60,14 @@ for (rpt in Rpt) {
       #----------------------#
       # MNIST3 dataset input #
       #----------------------#
-#      DataFile <- "dataset/mnist3.csv" # dataset file
-#      OutDir <- "ensemble members/mnist3/"
+#      DataFile <- "dataset/mnist3_all.csv" # dataset file
+#      OutDir <- "ensemble members/mnist3_all/"
       
       #----------------------#
       # MNIST5 dataset input #
       #----------------------#
-#      DataFile <- "dataset/mnist5.csv" # dataset file
-#      OutDir <- "ensemble members/mnist5/"
+#      DataFile <- "dataset/mnist5_all.csv" # dataset file
+#      OutDir <- "ensemble members/mnist5_all/"
   
       source("base_clustering.R")
       

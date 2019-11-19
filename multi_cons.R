@@ -1,7 +1,7 @@
 ########################
 # MULTI CONS ALGORITHM #
 ########################
-
+library(hash)
 #------------------#
 # INPUT PARAMETERS #
 #------------------#
@@ -66,25 +66,56 @@ source("closed_patterns.R")
 #------------------------------#
 Must_Link <- tryCatch(read.csv(mFile, header = FALSE), error=function(e) NULL)
 Cannot_Link <- tryCatch(read.csv(cFile, header = FALSE), error=function(e) NULL)
+
+cons_n <- unique(c(Must_Link[,1],Must_Link[,2],Cannot_Link[,1],Cannot_Link[,2]))
+idx_list = hash()
+.set(idx_list, keys=as.character(c(1:Data_Size)),values=length(cons_n)+1)
+.set(idx_list, keys=as.character(cons_n), values=1:length(cons_n))
+
 #Must_Link <- read.csv(mFile, header=FALSE)
 #Cannot_Link <- read.csv(cFile, header=FALSE)
-constraints = matrix(0L, nrow=Data_Size, ncol=Data_Size)
-if (!is.null(Must_Link))
+constraints = matrix(0L, nrow=(length(cons_n) + 1), ncol=(length(cons_n) + 1))
+
+
+if (!is.null(Must_Link)) {
+#  constraints[unname(values(idx_list, keys=as.character(Must_Link[,]$V1))),
+#              unname(values(idx_list, keys=as.character(Must_Link[,]$V2)))] <- 1
+#  constraints[unname(values(idx_list, keys=as.character(Must_Link[,]$V2))),
+#              unname(values(idx_list, keys=as.character(Must_Link[,]$V1)))] <- 1
+#}
+#if (!is.null(Cannot_Link)) {
+#  constraints[unname(values(idx_list, keys=as.character(Cannot_Link[,]$V1))),
+#              unname(values(idx_list, keys=as.character(Cannot_Link[,]$V2)))] <- -1
+#  constraints[unname(values(idx_list, keys=as.character(Cannot_Link[,]$V2))),
+#              unname(values(idx_list, keys=as.character(Cannot_Link[,]$V1)))] <- -1
+#}
+
 for (i in c(1:nrow(Must_Link))) {
-  constraints[Must_Link[i,]$V1, Must_Link[i,]$V2] = 1
-  constraints[Must_Link[i,]$V2, Must_Link[i,]$V1] = 1
+  constraints[idx_list[[toString(Must_Link[i,]$V1)]], idx_list[[toString(Must_Link[i,]$V2)]]] <- 1
+  constraints[idx_list[[toString(Must_Link[i,]$V2)]], idx_list[[toString(Must_Link[i,]$V1)]]] <- 1
+  #constraints[[paste(toString(Must_Link[i,]$V2),toString(Must_Link[i,]$V1),sep="_")]] <- 1
+  
+  #constraints[, Must_Link[i,]$V2] = 1
+  #constraints[Must_Link[i,]$V2, Must_Link[i,]$V1] = 1
+}
 }
 if (!is.null(Cannot_Link))
 for (i in c(1:nrow(Cannot_Link))) {
-  constraints[Cannot_Link[i,]$V1, Cannot_Link[i,]$V2] = -1
-  constraints[Cannot_Link[i,]$V2, Cannot_Link[i,]$V1] = -1
+  constraints[idx_list[[toString(Cannot_Link[i,]$V1)]], idx_list[[toString(Cannot_Link[i,]$V2)]]] <- -1
+  constraints[idx_list[[toString(Cannot_Link[i,]$V2)]], idx_list[[toString(Cannot_Link[i,]$V1)]]] <- -1
+  #constraints[Cannot_Link[i,]$V1, Cannot_Link[i,]$V2] = -1
+  #constraints[Cannot_Link[i,]$V2, Cannot_Link[i,]$V1] = -1
+  #constraints[[paste(toString(Cannot_Link[i,]$V1),toString(Cannot_Link[i,]$V2),sep="_")]] <- -1
+  #constraints[[paste(toString(Cannot_Link[i,]$V2),toString(Cannot_Link[i,]$V1),sep="_")]] <- -1
+  
 }
-#constraints <- constraints + t(constraints)
+
 #----------------------------#
 # MULTI CONSENSUS GENERATION #
 #----------------------------#
 source("constrained_consensus.R")
 
+clear(idx_list)
 #-------------------#
 # OUTLIER DETECTION #
 #-------------------#
@@ -104,4 +135,4 @@ res$Rmv_Inst <- Rmv_Inst
 res$Tme_consensus <- as.numeric(Tme_consensus)
 res$Tme_FCI <- as.numeric(Tme_FCI)
 res$Tme_selection <- as.numeric(Tme_selection)
-write(toJSON(res, pretty=TRUE), paste(OutDir,paste(Name,conNum,round(as.numeric(Sys.time())*1000),sep="_"),".json",sep=""))
+write(toJSON(res, pretty=TRUE), paste(OutDir,paste(Name,round(as.numeric(Sys.time())*1000),sep="_"),".json",sep=""))

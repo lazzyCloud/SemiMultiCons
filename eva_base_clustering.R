@@ -7,26 +7,26 @@ InDir <- "ensemble members/iris/"
 #--------------------#
 # Wine dataset input #
 #--------------------#
-InFile <- "dataset/wine.csv" # dataset file
-InDir <- "ensemble members/wine/"
+#InFile <- "dataset/wine.csv" # dataset file
+#InDir <- "ensemble members/wine/"
 
 #--------------------#
 # Zoo dataset input #
 #--------------------#
-InFile <- "dataset/zoo.csv" # dataset file
-InDir <- "ensemble members/zoo/"
+#InFile <- "dataset/zoo.csv" # dataset file
+#InDir <- "ensemble members/zoo/"
 
 #----------------------#
 # MNIST3 dataset input #
 #----------------------#
-InFile <- "dataset/mnist3.csv" # dataset file
-InDir <- "ensemble members/mnist3/"
+#InFile <- "dataset/mnist3_all.csv" # dataset file
+#InDir <- "ensemble members/mnist3_all/"
 
 #----------------------#
 # MNIST5 dataset input #
 #----------------------#
-InFile <- "dataset/mnist5.csv" # dataset file
-InDir <- "ensemble members/mnist5/"
+#InFile <- "dataset/mnist5_all.csv" # dataset file
+#InDir <- "ensemble members/mnist5_all/"
 
 library(clue)
 #---------------------#

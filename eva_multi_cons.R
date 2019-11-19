@@ -33,22 +33,22 @@ InDir <- "results/iris1/"
 #----------------------#
 # MNIST3 dataset input #
 #----------------------#
-#InFile <- "dataset/mnist3.csv" # dataset file
-#InDir <- "results/mnist3/"
-#InDir <- "results/mnist3_1/"
-#InDir <- "results/mnist3_2/"
-#InDir <- "results/mnist3_3/"
-#InDir <- "results/mnist3_4/"
+#InFile <- "dataset/mnist3_all.csv" # dataset file
+#InDir <- "results/mnist31/"
+#InDir <- "results/mnist32/"
+#InDir <- "results/mnist33/"
+#InDir <- "results/mnist34/"
+#InDir <- "results/mnist35/"
 
 #----------------------#
 # MNIST5 dataset input #
 #----------------------#
-#InFile <- "dataset/mnist5.csv" # dataset file
-#InDir <- "results/mnist5/"
-#InDir <- "results/mnist5_1/"
-#InDir <- "results/mnist5_2/"
-#InDir <- "results/mnist5_3/"
-#InDir <- "results/mnist5_4/"
+#InFile <- "dataset/mnist5_all.csv" # dataset file
+#InDir <- "results/mnist51/"
+#InDir <- "results/mnist52/"
+#InDir <- "results/mnist53/"
+#InDir <- "results/mnist54/"
+#InDir <- "results/mnist55/"
 
 ResultsNames <- list.files(path=InDir, full.names = TRUE)
 
