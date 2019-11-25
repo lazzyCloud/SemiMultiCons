@@ -58,7 +58,8 @@ for (conNum in conNumList) {
   #--------------------#
   # Iris dataset input #
   #--------------------#
-  OutDir <- "results/iris1/"
+  OutDir <- "results/iris_test/"
+  #OutDir <- "results/iris1/"
   #OutDir <- "results/iris2/"
   #OutDir <- "results/iris3/"
   #OutDir <- "results/iris4/"
