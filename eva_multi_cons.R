@@ -4,7 +4,8 @@ library(clue)
 # Iris dataset input #
 #--------------------#
 InFile <- "dataset/iris.csv" # dataset file
-InDir <- "results/iris1/"
+InDir <- "results/iris_test/"
+#InDir <- "results/iris1/"
 #InDir <- "results/iris2/"
 #InDir <- "results/iris3/"
 #InDir <- "results/iris4/"
