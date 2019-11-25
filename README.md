@@ -24,7 +24,10 @@ install.packages("package name should be here")
 ```
 ## How to run a test on Iris
 - Set **_SemiMultiCons_** as your working directory.
-- 
+- Run the whole script **_benchmark_multi_cons.R_**
+- Run the whole script **_eva_multi_cons.R_**
+
+The result will be generated at **_./results/iris_test/evaluation.csv_**
 ## Base clustering generation
 The base clusterings can be generated from our implementation by running **_benchmark_base_clustering.R_** . Our test dataset is provided under the repository **./dataset/** and our input parameters can be find in the comments of R script.
 For example line 1 - line 6 of **_benchmark_base_clustering.R_** : 
