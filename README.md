@@ -23,7 +23,8 @@ For those who do not know how to install a R package from R command line, use
 install.packages("package name should be here")
 ```
 ## How to run a test on Iris
-- Set **_SemiMultiCons_** as your working directory.
+- Set **_SemiMultiCons_** as your working directory
+- Create a folder named as **_iris_test_** under **_./results/_**
 - Run the whole script **_benchmark_multi_cons.R_**
 - Run the whole script **_eva_multi_cons.R_**
 
