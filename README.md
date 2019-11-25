@@ -22,7 +22,9 @@ For those who do not know how to install a R package from R command line, use
 ```
 install.packages("package name should be here")
 ```
-
+## How to run a test on Iris
+- Set **_SemiMultiCons_** as your working directory.
+- 
 ## Base clustering generation
 The base clusterings can be generated from our implementation by running **_benchmark_base_clustering.R_** . Our test dataset is provided under the repository **./dataset/** and our input parameters can be find in the comments of R script.
 For example line 1 - line 6 of **_benchmark_base_clustering.R_** : 
@@ -77,9 +79,36 @@ conNumList <- seq(0.0004,0.02,0.0004)
 ```
 ### If you want to generate your own Semi-MultiCons result with our implementation
 The following input parameters should be provided in **_benchmark_multi_cons.R_**: 
-- **LinkFolder** : the repository where all must link constraints and cannot link constraints are provided. The constraints for our test dataset can be find under **./constraints/dataset name + repeated time**. When providing your constraints, the file should be named as **m_dataset name_percentage of constraints_timestamp.csv** or **c_dataset name_percentage of constraints_timestamp.csv**. **m** indicates must-link file while **c** indicates cannot-link file. **percentage of constraints** represents how much supervised information the constraints give, for example, **0.004** for iris dataset means **_29_** cannot-link constraints and **_14_** must-link constraints because in total, iris dataset has **150*(150-1)/2=11175** constraints, thus **0.004** supervised information means **11175*0.004=44.7** constraints. In iris dataset, the total ratio of must-link and cannot-link is 1:2, results in **29** cannot-link constraints and **14** must-link constraints (we always use a floor function instead of round function). The content of a constraint file should be two columns, each line represents a pair of instances, **_without index or header_**.
+- **LinkFolder** : the repository where all must link constraints and cannot link constraints are provided. The constraints for our test dataset can be find under **./constraints/dataset name + repeated time**. When providing your constraints, the file should be named as **m_dataset name_percentage of constraints_timestamp.csv** or **c_dataset name_percentage of constraints_timestamp.csv**. **m** indicates must-link file while **c** indicates cannot-link file. **percentage of constraints** represents how much supervised information the constraints give, for example, **0.004** for iris dataset means **_29_** cannot-link constraints and **_14_** must-link constraints because in total, iris dataset has **150*(150-1)/2=11175** constraints, thus **0.004** supervised information means **11175*0.004=44.7** constraints. In iris dataset, the total ratio of must-link and cannot-link is 1:2, results in **29** cannot-link constraints and **14** must-link constraints (we always use a floor function instead of round function). The content of a constraint file should be two columns, each line represents a pair of instance index, **_without index or header_**.
 - **conNumList** : the list of constraints to test Semi-MultiCons. The constraints is always represented by percentage of supervised information. The three float numbers respectively represent **start**, **end** and **step**
 - **InDir** : where to read the base clusterings, by default it should be **./ensemble members/dataset name/**
 - **Name** : name of the dataset, will not change any Semi-MultiCons results, just give a name to your execution
 - **OutDir** : where to store the generated Semi-MultiCons results
+
+## Semi-MultiCons evaluation
+As said before, the generated Semi-MultiCons results are stored under **OurDir** of **_benchmark_multi)cons.R_**, which by default is **./results/dataset name + repeated time**. One Semi-MultiCons result contains the following things in **_file name_**: 
+- **Name** of execution 
+- **percentage of constraints** 
+- **timestamp** 
+
+In the result file, a json is sotred, containning the following information: 
+- **Stabl_Cons_Vctrs** : a list contains several array, each represents one level in our hierchical structure, which means one consensus clustering result. The first array is the highest level, while the last array is the lowest level in the consensus tree.
+- **Bst_Cons** : the level selected by Semi-MultiCons algorithm (without constrained selection strategy)
+- **Bst_Cons_con** : the level selected by iSemi-MultiCons algorithm (with constrained selection strategy)
+- **Stability** : we merge the identical levels during the implementation, thus stability means how many times one level is repeated
+- **Rmv_Inst** : the index of instance which can be seen as **outliers**
+- **Tme_consensus** : consensus time (sec in **_local time_**)
+- **Tme_FCI** : closed itemset generation time (sec in **_local time_**)
+- **Tme_selection** : constrained selection strategy running time (sec in **_local time_**)
+
+We have a small R script to help you summarize the results: **_eva_multi_cons.R_**, which takes the following parameters:
+- **InFile** : input dataset file
+- **InDir** : input repository which contains Semi-MultiCons results
+
+This script first read information from Semi-MultiCons result file's name, to get the percentage of constraints, then read the content to get the performance of Semi-MultiCons and iSemi-MultiCons, and finally generate an **_evaluation.csv_** file. 
+#### Be careful that before running this script, make sure that **_no file named as evaluation.csv exists in InDir_**
+
+In evaluation.csv, the columns respectively represent: **_index, percentage of constraints, best accuracy in tree, k corresponding to best accuracy, accuracy of Semi-MultiCons, k of Semi-MultiCons, accuracy of iSemi-MultiCons, k of iSemi-MultiCons, number of outliers, FCI time, consensus time (for generating all levels)_**
+
+
 
